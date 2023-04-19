@@ -10,7 +10,7 @@ using WebBox.Controller;
 namespace System;
 public static class WebBoxExtensions
 {
-    public static WebBoxedServer AddApiController<T>(this WebBoxedServer boxedServer) where T : ControllerBase
+    public static ControllerDesctiptors AddApiController<T>(this ControllerDesctiptors controllers) where T : ControllerBase
     {
         var descriptor = new ControllerDescriptor
         {
@@ -24,9 +24,9 @@ public static class WebBoxExtensions
                 response.Headers.Add("Content-Type", "application/json");
             }
         };
-        
-        boxedServer.Controllers.Add(descriptor);
 
-        return boxedServer;
+        controllers.Add(descriptor);
+
+        return controllers;
     }
 }

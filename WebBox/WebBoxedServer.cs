@@ -10,7 +10,6 @@ using WebBox.Ioc;
 namespace WebBox;
 public class WebBoxedServer
 {
-
     private readonly HttpListener _listener;
 
     public WebBoxedServer(HttpListener? listener = null)
@@ -20,19 +19,19 @@ public class WebBoxedServer
 
     #region Options
 
-    public ControllerDesctiptors Controllers
+    public virtual ControllerDesctiptors Controllers
     {
         get;
     } = new();
 
-    public ServiceDescriptors Services
+    public virtual ServiceDescriptors Services
     {
         get;
     } = new();
 
     #endregion
 
-    public void Start()
+    public virtual void Start()
     {
         _listener.Start();
     }
