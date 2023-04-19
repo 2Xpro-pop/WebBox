@@ -12,9 +12,13 @@ internal class LifeTimedServiceProvider : IDisposable, IServiceProvider
     private readonly Enum[] _scopes;
 
     public LifeTimedServiceProvider(ServiceDescriptors serviceDescriptors, params Enum[] scopes)
-    {   
+    {
         _descriptors = serviceDescriptors;
-        _scopedService = serviceDescriptors.Where(d => scopes.Any(s => s == d.Lifetime));
+        _scopedService = serviceDescriptors.Where(d => 
+            d.Lifetime.Equals(ServiceScope.Transient) || 
+            d.Lifetime.Equals(ServiceScope.Singleton) ||
+            scopes.Any(s => s == d.Lifetime)
+        );
         _scopes = scopes;
     }
     

@@ -8,7 +8,7 @@ using WebBox;
 using WebBox.Controller;
 
 namespace System;
-public static class WebBoxExtensions
+public static class ControllerExtensions
 {
     public static ControllerDesctiptors AddApiController<T>(this ControllerDesctiptors controllers) where T : ControllerBase
     {

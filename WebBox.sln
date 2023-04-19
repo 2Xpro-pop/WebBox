@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebBox", "WebBox\WebBox.csproj", "{B283BABE-6550-42F5-8250-307E50865D55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebBox", "WebBox\WebBox.csproj", "{B283BABE-6550-42F5-8250-307E50865D55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebBox.UnitTesting", "WebBox.UnitTesting\WebBox.UnitTesting.csproj", "{6FC0BD76-C083-4C48-A3FF-F3511D46BEE0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{B283BABE-6550-42F5-8250-307E50865D55}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B283BABE-6550-42F5-8250-307E50865D55}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B283BABE-6550-42F5-8250-307E50865D55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FC0BD76-C083-4C48-A3FF-F3511D46BEE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FC0BD76-C083-4C48-A3FF-F3511D46BEE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FC0BD76-C083-4C48-A3FF-F3511D46BEE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FC0BD76-C083-4C48-A3FF-F3511D46BEE0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

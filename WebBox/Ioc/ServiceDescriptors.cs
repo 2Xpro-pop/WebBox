@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace WebBox.Ioc;
 public class ServiceDescriptors : List<ServiceDescriptor>, ICloneable
 {
+
     public object Clone()
     {
         var clone = new ServiceDescriptors();
@@ -17,5 +18,4 @@ public class ServiceDescriptors : List<ServiceDescriptor>, ICloneable
 
         return clone;
     }
-}
 }
