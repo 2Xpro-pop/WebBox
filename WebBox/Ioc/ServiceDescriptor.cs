@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace WebBox.Ioc;
-public class ServiceDescriptor
+public class ServiceDescriptor: ICloneable
 {
     public ServiceDescriptor(Type serviceType, Type implementationType, Enum lifetime)
     {
@@ -29,4 +29,6 @@ public class ServiceDescriptor
     }
 
     public object? Instance { get; set; }
+
+    public object Clone() => Lifetime.Equals(ServiceScope.Singleton) ? this : MemberwiseClone();
 }
