@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using WebBox.Controller;
 
 namespace WebBox.Router;
-public class RouteCollection
+public partial class RouteCollection
 {
     private readonly WebBoxedServer _webBoxed;
 
@@ -29,23 +29,23 @@ public class RouteCollection
         controller.Instance.BuildRoutes(builder);
     }
 
-    public bool MapRoute(string route)
+    public RouteInfo? MapRoute(IEnumerable<ControllerDescriptor> controllers,string route)
     {
         var pattern = Endpoints.Keys.FirstOrDefault(p => CheckPathPattern(p, route));
         if (pattern == null)
         {
-            return false;
+            return null;
         }
         
         var endpoint = Endpoints[pattern];
         var method = endpoint.Method;
-        var controller = Activator.CreateInstance(method.DeclaringType!);
+        var controller = controllers.First(x => x.ControllerType.Equals(method.DeclaringType)).Instance;
         var parameters = method.GetParameters();
 
         // Подготовка параметров
         var pathParts = route.Split('/');
         var patternParts = pattern.Split('/');
-        var regex = new Regex(@"{([^{}]+)}");
+        var regex = MyRegex();
         var matches = regex.Matches(pattern);
         var args = new List<object>();
         foreach (var parameter in parameters)
@@ -66,10 +66,12 @@ public class RouteCollection
                 args.Add(null);
             }
         }
-
-        // Вызов обработчика
-        method.Invoke(controller, args.ToArray());
-        return true;
+        
+        return new RouteInfo(controller, () =>
+        {
+            var result = method.Invoke(controller, args.ToArray());
+            return result;
+        });
     }
 
     public static bool CheckPathPattern(string pattern, string path)
@@ -85,7 +87,7 @@ public class RouteCollection
         }
 
         // Создание регулярного выражения для каждого параметра
-        var regex = new Regex(@"{([^{}]+)}");
+        var regex = MyRegex();
         var patternRegex = pattern.Replace(".", @"\.").Replace("/", @"\/");
         var matches = regex.Matches(pattern);
         foreach (Match match in matches)
@@ -124,5 +126,8 @@ public class RouteCollection
     
     }
 
-    record EndpointInfo(MethodInfo Method, string method);
+    private record EndpointInfo(MethodInfo Method, string RequestMethod);
+
+    [GeneratedRegex("{([^{}]+)}")]
+    private static partial Regex MyRegex();
 }

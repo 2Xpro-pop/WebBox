@@ -6,19 +6,21 @@ using System.Text;
 using System.Threading.Tasks;
 using WebBox.Controller;
 using WebBox.Ioc;
+using WebBox.Router;
 
 namespace WebBox;
 public class WebBoxedServer
 {
-    private bool _isRunning = false;
-    private CancellationToken _cancellation = default;
+    protected bool _isRunning = false;
+    protected CancellationToken _cancellation = default;
     
-    private readonly HttpListener _listener;
+    protected readonly HttpListener _listener;
 
     public WebBoxedServer(HttpListener? listener = null)
     {
         _listener = listener ?? new HttpListener();
         ServiceProvider = new WebBoxedServiceProvider(this);
+        Route = new RouteCollection(this);
     }
 
     #region Options
@@ -38,10 +40,21 @@ public class WebBoxedServer
         get;
     }
 
+    public RouteCollection Route
+    {
+        get;
+    }
+
     #endregion
 
     public virtual Task Start(CancellationToken cancellationToken = default)
     {
+        
+        foreach (var controller in Controllers)
+        {
+            Route.AddRoutes(controller);
+        }
+        
         _isRunning = true;
         _listener.Start();
 
@@ -72,6 +85,27 @@ public class WebBoxedServer
 
         var scopedServices = ServiceProvider.CreateLifeTimedScope(ServiceScope.Request);
 
-        
+        foreach(var controller in Controllers)
+        {
+            controller.Instance.ProvideService(scopedServices);
+        }
+
+        var url = req.Url;
+        var route = url.PathAndQuery + url.Fragment;
+
+        var routeInfo = Route.MapRoute(Controllers,route);
+
+        if (routeInfo != null)
+        {
+            var result = routeInfo.Method();
+            if (result != null)
+            {
+                routeInfo.Controller.ResultHandler(result, req, resp);
+            }
+            else
+            {
+                resp.StatusCode = 200;
+            }
+        }
     }
 }
