@@ -14,6 +14,7 @@ public static class ControllerExtensions
     {
         var descriptor = new ControllerDescriptor
         {
+            Path = typeof(T).Name.Replace("Controller", string.Empty),
             ControllerType = typeof(T),
             ResultHandler = (result, request, response) =>
             {

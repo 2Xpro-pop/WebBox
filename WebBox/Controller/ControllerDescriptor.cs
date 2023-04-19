@@ -14,7 +14,7 @@ public class ControllerDescriptor
     public Type ControllerType
     {
         get => controllerType; 
-        set => controllerType = value.IsAssignableFrom(typeof(ControllerBase)) ? value : throw new NotSupportedException();
+        set => controllerType = value.IsAssignableTo(typeof(ControllerBase)) ? value : throw new NotSupportedException();
     }
     
     public Action<object, HttpListenerRequest, HttpListenerResponse> ResultHandler

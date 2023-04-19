@@ -39,7 +39,8 @@ public partial class RouteCollection
         
         var endpoint = Endpoints[pattern];
         var method = endpoint.Method;
-        var controller = controllers.First(x => x.ControllerType.Equals(method.DeclaringType)).Instance;
+        var controllerDescriptor = controllers.First(x => x.ControllerType.Equals(method.DeclaringType));
+        var controller = controllerDescriptor.Instance;
         var parameters = method.GetParameters();
 
         // Подготовка параметров
@@ -67,7 +68,7 @@ public partial class RouteCollection
             }
         }
         
-        return new RouteInfo(controller, () =>
+        return new RouteInfo(controllerDescriptor, () =>
         {
             var result = method.Invoke(controller, args.ToArray());
             return result;

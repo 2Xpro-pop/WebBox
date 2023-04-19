@@ -52,6 +52,7 @@ public class WebBoxedServer
         
         foreach (var controller in Controllers)
         {
+            controller.Instance = (ControllerBase)Activator.CreateInstance(controller.ControllerType)!;
             Route.AddRoutes(controller);
         }
         
